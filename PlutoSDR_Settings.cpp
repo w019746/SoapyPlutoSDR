@@ -202,7 +202,7 @@ void SoapyPlutoSDR::setGainMode( const int direction, const size_t channel, cons
 
 		if(automatic) {
 
-			iio_channel_attr_write(iio_device_find_channel(dev, "voltage0", false), "gain_control_mode", "slow_attack");
+			iio_channel_attr_write(iio_device_find_channel(dev, "voltage0", false), "gain_control_mode", "manual");
 
 		}else{
 
