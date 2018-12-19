@@ -478,7 +478,6 @@ int tx_streamer::send(	const void * const *buffs,
 		}
 
 	}
-
 	ssize_t ret = iio_buffer_push(buf);
 
 	if (ret < 0){

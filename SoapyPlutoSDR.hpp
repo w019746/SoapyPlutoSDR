@@ -28,10 +28,12 @@ class rx_streamer {
 				const long long timeNs=100000);
 
 		void set_buffer_size_by_samplerate(const size_t _samplerate);
+    
+    void set_buffer_size(const size_t _buffer_size);
 
 	private:
 
-		void set_buffer_size(const size_t _buffer_size);
+		
 
 		void channel_read(const struct iio_channel *chn, void *dst, size_t len);
 
@@ -258,7 +260,15 @@ class SoapyPlutoSDR : public SoapySDR::Device{
 		std::vector<double> listBandwidths( const int direction, const size_t channel ) const;
 
 
-
+    
+    /*******************************************************************
+		 * buffer resizing API
+		 ******************************************************************/
+    
+    
+    void set_rx_buffer_size(const size_t buffer_size);
+    
+    
 	private:
 
 		iio_context *ctx;

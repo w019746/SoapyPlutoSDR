@@ -296,6 +296,12 @@ void SoapyPlutoSDR::setFrequency( const int direction, const size_t channel, con
 
 }
 
+
+void SoapyPlutoSDR::set_rx_buffer_size(const size_t buffer_size)
+{
+   rx_stream->set_buffer_size_by_samplerate(buffer_size);
+}
+
 double SoapyPlutoSDR::getFrequency( const int direction, const size_t channel, const std::string &name ) const
 {
 	std::lock_guard<std::mutex> lock(device_mutex);
