@@ -291,6 +291,21 @@ SoapySDR::Range SoapyPlutoSDR::getGainRange( const int direction, const size_t c
 
 }
 
+void SoapyPlutoSDR::set_rx_buffer_size(const size_t buffer_size)
+{
+   if (rx_stream) {
+     rx_stream->set_buffer_size(buffer_size);
+   }
+}
+
+void SoapyPlutoSDR::reset_rx_buffer_size(const size_t buffer_size)
+{
+  if (rx_stream) {
+     rx_stream->reset_buffer_size(buffer_size);
+  }
+}
+
+
 /*******************************************************************
  * Frequency API
  ******************************************************************/
@@ -375,6 +390,7 @@ void SoapyPlutoSDR::setSampleRate( const int direction, const size_t channel, co
 			samplerate = samplerate * 8;
 		}
 
+		printf("rx sample_rate=%d\n", samplerate);
 		iio_channel_attr_write_longlong(iio_device_find_channel(dev, "voltage0", false),"sampling_frequency", samplerate);
 
 		iio_channel_attr_write_longlong(iio_device_find_channel(rx_dev, "voltage0", false), "sampling_frequency", decimation?samplerate/8:samplerate);
@@ -394,6 +410,7 @@ void SoapyPlutoSDR::setSampleRate( const int direction, const size_t channel, co
 			samplerate = samplerate * 8;
 		}
 
+		printf("tx sample_rate=%d\n", samplerate);
 
 		iio_channel_attr_write_longlong(iio_device_find_channel(dev, "voltage0", true),"sampling_frequency", samplerate);
 		iio_channel_attr_write_longlong(iio_device_find_channel(tx_dev, "voltage0", true), "sampling_frequency", interpolation?samplerate / 8:samplerate);

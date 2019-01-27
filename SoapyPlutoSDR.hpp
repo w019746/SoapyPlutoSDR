@@ -32,9 +32,11 @@ class rx_streamer {
 
 		void set_buffer_size_by_samplerate(const size_t _samplerate);
 
-	private:
-
 		void set_buffer_size(const size_t _buffer_size);
+                void set_buffer_size_unlocked(const size_t _buffer_size);
+                void reset_buffer_size(const size_t _buffer_size);
+
+	private:
 
 		void channel_read(const struct iio_channel *chn, void *dst, size_t len);
 
@@ -53,8 +55,12 @@ class rx_streamer {
 		size_t byte_offset;
 		size_t items_in_buffer;
 		iio_buffer  *buf;
+                std::vector<int16_t> buffer;
 		const plutosdrStreamFormat format;
 		float lut[4096];
+		bool resize_buffer;
+                size_t new_buffer_size;
+
 		bool direct_copy;
 
 };
@@ -79,6 +85,7 @@ class tx_streamer {
 		size_t buf_size;
 		size_t items_in_buf;
 		bool direct_copy;
+                std::vector<int16_t> buffer;
 
 };
 
@@ -267,6 +274,15 @@ class SoapyPlutoSDR : public SoapySDR::Device{
 
 
 		std::vector<double> listBandwidths( const int direction, const size_t channel ) const;
+                /*******************************************************************
+                * buffer resizing API
+                ******************************************************************/
+
+                void set_rx_buffer_size(const size_t buffer_size);
+
+               
+                void reset_rx_buffer_size(const size_t buffer_size);
+
 
 
 
