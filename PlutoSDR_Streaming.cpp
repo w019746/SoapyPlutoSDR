@@ -7,7 +7,7 @@
 #include <algorithm> 
 #include <sys/time.h>
 
-#define BUFFER_SIZE 1920
+#define BUFFER_SIZE 2048
 
 struct PlutoSDRStream
 {
@@ -352,9 +352,9 @@ size_t rx_streamer::recv(void * const *buffs,
 //		printf("Failed to load status register\n");
 	}
 	if (val & 1)
-	  fprintf(stderr, "[IIO] Underflow detected\n");
+	  fprintf(stderr, "[IIO] Underflow detected in RX\n");
 	if (val & 4)
-	  fprintf(stderr, "[IIO] Overflow detected\n");
+	  fprintf(stderr, "[IIO] Overflow detected in RX\n");
 
 	if (do_log) printf("pluto: items_in_buffer is now %d\n", items_in_buffer);
 	return(items);
@@ -371,7 +371,6 @@ int rx_streamer::start(const int flags,
 	please_refill_buffer = false;
 	thread_stopped = false;
 
-	//iio_device_set_kernel_buffers_count(dev, 6);
 	printf("RX buffer size: %d samples\n", buffer_size);
 	buf = iio_device_create_buffer(dev, buffer_size, false);
 
@@ -636,9 +635,9 @@ int tx_streamer::send(	const void * const *buffs,
 //		printf("Failed to load status register\n");
 	}
 	if (val & 1)
-	  fprintf(stderr, "[IIO] Underflow detected\n");
+	  fprintf(stderr, "[IIO] Underflow detected in TX\n");
 	if (val & 4)
-	  fprintf(stderr, "[IIO] Overflow detected\n");
+	  fprintf(stderr, "[IIO] Overflow detected in TX\n");
 
 	return items;
 
