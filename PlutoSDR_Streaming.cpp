@@ -188,7 +188,7 @@ void rx_streamer::set_buffer_size_by_samplerate(const size_t _samplerate) {
 	n = n - (x >> 31);
 
 	//this->set_buffer_size(std::max(1 << (31 - n - 2), 16384));
-	this->set_buffer_size(BUFFER_SIZE);
+	this->set_buffer_size(buffer_size);
 	SoapySDR_logf(SOAPY_SDR_INFO, "Auto setting Buffer Size: %d", buffer_size);
 }
 
@@ -371,10 +371,14 @@ int rx_streamer::start(const int flags,
 	please_refill_buffer = false;
 	thread_stopped = false;
 
-	printf("RX buffer size: %d samples\n", buffer_size);
-	buf = iio_device_create_buffer(dev, buffer_size, false);
-
+	
+//	
+        if(!buf) {
+	  buf = iio_device_create_buffer(dev, buffer_size, false);
+	  printf("RX buffer size: %d samples\n", buffer_size);
+        }
 	if (buf) {
+	
 	/*
 		refill_thd = std::thread(&rx_streamer::refill_thread, this);
 		struct sched_param p; 
