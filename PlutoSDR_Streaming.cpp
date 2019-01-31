@@ -371,8 +371,11 @@ int rx_streamer::start(const int flags,
 	please_refill_buffer = false;
 	thread_stopped = false;
 
-	
-//	
+
+ 
+  if (iio_channel_attr_write_longlong(iio_device_find_channel(dev, "voltage3", true), "raw", 2300)) {
+    printf("cannot change ps aux millivolts\n");
+  }
         if(!buf) {
 	  buf = iio_device_create_buffer(dev, buffer_size, false);
 	  printf("RX buffer size: %d samples\n", buffer_size);
@@ -407,6 +410,10 @@ int rx_streamer::stop(const int flags,
 
 	std::unique_lock<std::mutex> lock(mutex);
 
+  
+  if (iio_channel_attr_write_longlong(iio_device_find_channel(dev, "voltage3", true), "raw", 306)) {
+    printf("cannot change ps aux back millivolts\n");
+  }
 	please_refill_buffer = true;
 	cond.notify_all();
 	lock.unlock();
