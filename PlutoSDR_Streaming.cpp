@@ -347,15 +347,16 @@ size_t rx_streamer::recv(void * const *buffs,
 	items_in_buffer -= items;
 	byte_offset += items * iio_buffer_step(buf);
 
+#if 0
 	uint32_t val;
 	if (iio_device_reg_read((struct iio_device*) dev, 0x80000088, &val)) {
-//		printf("Failed to load status register\n");
+		printf("Failed to load status register\n");
 	}
 	if (val & 1)
 	  fprintf(stderr, "[IIO] Underflow detected in RX\n");
 	if (val & 4)
 	  fprintf(stderr, "[IIO] Overflow detected in RX\n");
-
+#endif
 	if (do_log) printf("pluto: items_in_buffer is now %d\n", items_in_buffer);
 	return(items);
 
@@ -641,6 +642,7 @@ int tx_streamer::send(	const void * const *buffs,
 		}
 	}
 
+#if 0
 	uint32_t val;
 	if (iio_device_reg_read((struct iio_device*) dev, 0x80000088, &val)) {
 //		printf("Failed to load status register\n");
@@ -649,7 +651,7 @@ int tx_streamer::send(	const void * const *buffs,
 	  fprintf(stderr, "[IIO] Underflow detected in TX\n");
 	if (val & 4)
 	  fprintf(stderr, "[IIO] Overflow detected in TX\n");
-
+#endif
 	return items;
 
 }
